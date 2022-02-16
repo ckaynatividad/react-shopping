@@ -23,17 +23,24 @@ export default function Item({ item, onChange, onDelete }) {
   } else {
     itemDesc = (
       <>
-        <p style={{ textDecoration: item.done ? 'line-through' : null }}>
+        <p className={item.done ? 'done' : null}>
           {item.text}
+          <button type="button" onClick={() => setEdit(true)}>
+            Edit
+          </button>
+          <button type="button" onClick={() => onDelete(item.id)}>
+            X{' '}
+          </button>
         </p>
-        <button type="button" onClick={() => setEdit(true)}>
-          Edit
-        </button>
       </>
     );
   }
   return (
-    <div>
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <input
         type="checkbox"
         checked={item.done}
@@ -42,9 +49,6 @@ export default function Item({ item, onChange, onDelete }) {
         }}
       />
       {itemDesc}
-      <button type="button" onClick={() => onDelete(item.id)}>
-        X{' '}
-      </button>
     </div>
   );
 }
