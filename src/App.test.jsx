@@ -1,24 +1,52 @@
-import { render, screen } from '@testing-library/react';
-import { rest } from 'msw';
-import { setupServer } from 'msw/node';
+import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from './App';
-import { data } from './services/data';
 
-//use if using api server
-const server = setupServer(
-  rest.get('api', (req, res, ctx) => {
-    return res(ctx.json(data));
-  })
-);
-
-beforeAll(() => server.listen());
-
-afterAll(() => server.close());
-
-test('app renders', () => {
+test('adds to list', () => {
   render(<App />);
 
-  const heading = screen.getByRole('heading');
+  const textBox = screen.getByRole('textbox');
+  userEvent.type(textBox, 'cookies');
+  const add = screen.getByRole('button', { name: /Add/i });
+  userEvent.click(add);
 
-  expect(heading).toBeInTheDocument();
+  expect(screen.getByText('cookies')).toBeInTheDocument();
+});
+
+test('changes li item', () => {
+  render(<App />);
+
+  const milk = screen.getByText(/Milk/i);
+  const edit = within(milk).getByRole('button', { name: /Edit/i });
+  userEvent.click(edit);
+  const li = screen.getByRole('list');
+  const changeInput = within(li).getByRole('textbox');
+  userEvent.type(changeInput, 'cookies');
+
+  const save = screen.getByRole('button', { name: /Save/i });
+  userEvent.click(save);
+
+  expect(screen.getByText('Milkcookies')).toBeInTheDocument();
+});
+
+test('deletes li item', () => {
+  render(<App />);
+
+  const noodles = screen.getByText(/Noodles/i);
+  const x = within(noodles).getByRole('button', { name: /x/i });
+  userEvent.click(x);
+
+  expect(noodles).not.toBeInTheDocument();
+});
+
+test('displays all items', () => {
+  render(<App />);
+  const milk = screen.getByText(/Milk/i);
+  expect(milk).toBeInTheDocument();
+
+  const header = screen.getByRole('heading');
+  expect(header).toBeInTheDocument();
+
+  const li = screen.getAllByRole('listitem');
+  expect(li).toHaveLength(3);
 });
