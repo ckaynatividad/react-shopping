@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import AddItem from '../components/AddItem';
 import ItemList from '../components/ItemList';
 
-const fakeItems = [
+const initialItems = [
   { id: 0, text: 'Milk', done: false },
   { id: 1, text: 'Eggs', done: false },
   { id: 2, text: 'Noodles', done: false },
@@ -35,7 +35,7 @@ function itemsReducer(items, action) {
 }
 
 export default function Home() {
-  const [items, dispatch] = useReducer(itemsReducer, fakeItems);
+  const [items, dispatch] = useReducer(itemsReducer, initialItems);
 
   const handleAdd = (text) => {
     dispatch({
