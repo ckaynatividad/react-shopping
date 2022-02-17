@@ -37,12 +37,13 @@ const initialItems = [
 export const ListContext = createContext();
 
 const ListProvider = ({ children }) => {
-  const [items, dispatch] = useReducer(itemsReducer, initialItems);
+  const [items, dispatch] = useReducer(
+    itemsReducer,
+    JSON.parse(localStorage.getItem('LIST'))
+  );
   localStorage.setItem('LIST', JSON.stringify(items));
   useEffect(() => {
-    const fetchItems = async () => {
-      localStorage.getItem('LIST', items);
-    };
+    const fetchItems = () => {};
     fetchItems();
   }, []);
   const handleAdd = (text) => {
