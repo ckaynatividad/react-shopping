@@ -50,3 +50,14 @@ test('displays all items', () => {
   const li = screen.getAllByRole('listitem');
   expect(li).toHaveLength(3);
 });
+
+test('header clears all items', () => {
+  render(<App />);
+
+  const clear = screen.getByRole('button', { name: /Clear/i });
+  userEvent.click(clear);
+
+  const count = screen.getByText(`shopping list count: 0`);
+
+  expect(count).toBeInTheDocument();
+});
