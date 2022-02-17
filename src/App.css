@@ -1,4 +1,33 @@
 .App {
+  display: flex;
+  width: 500px;
   text-align: center;
-  background-color: cyan;
+  justify-content: center;
+  margin: auto;
+}
+
+.done {
+  text-decoration: line-through;
+  color: rgba(0, 0, 0, 0.234);
+}
+
+button {
+  border: none;
+  background-color: rgba(255, 245, 238, 0);
+  font-size: 7pt;
+  color: rgba(26, 26, 26, 0.514);
+  font-style: italic;
+  cursor: pointer;
+}
+
+p {
+  margin: 0;
+}
+
+li {
+  list-style: none;
+}
+
+input {
+  margin-right: 10px;
 }
