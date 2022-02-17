@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useEffect, useReducer } from 'react';
 
 function itemsReducer(items, action) {
   switch (action.type) {
@@ -23,31 +23,34 @@ function itemsReducer(items, action) {
     case 'deleted': {
       return items.filter((item) => item.id !== action.id);
     }
+    case 'clear': {
+      return (items = []);
+    }
   }
 }
+const initialItems = [
+  { id: 0, text: 'Milk', done: false },
+  { id: 1, text: 'Eggs', done: false },
+  { id: 2, text: 'Noodles', done: false },
+];
 
 export const ListContext = createContext();
 
 const ListProvider = ({ children }) => {
   const [items, dispatch] = useReducer(itemsReducer, initialItems);
 
-  const initialItems = [
-    { id: 0, text: 'Milk', done: false },
-    { id: 1, text: 'Eggs', done: false },
-    { id: 2, text: 'Noodles', done: false },
-  ];
+  //   useEffect(() => {
+  //     const fetchItems = async () => {
 
+  //     };
+  //     fetchItems();
+  //   }, []);
   const handleAdd = (text) => {
     dispatch({
       type: 'added',
-      id: items.length + 1,
+      id: items.length,
       text,
-    }),
-      addItem({
-        type: 'added',
-        id: items.length + 1,
-        text,
-      });
+    });
   };
   const handleChange = (task) => {
     dispatch({
@@ -61,9 +64,15 @@ const ListProvider = ({ children }) => {
       id: taskId,
     });
   };
+  const handleClear = (items) => {
+    dispatch({
+      type: 'clear',
+      id: items,
+    });
+  };
   return (
     <ListContext.Provider
-      value={{ initialItems, handleAdd, handleChange, handleDelete }}
+      value={{ items, handleAdd, handleChange, handleDelete, handleClear }}
     >
       {children}
     </ListContext.Provider>
