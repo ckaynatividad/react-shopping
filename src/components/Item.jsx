@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { useItems } from '../context/ListContext';
 
-export default function Item({ item, onChange, onDelete }) {
+export default function Item({ onChange, onDelete }) {
+  const { item } = useParams();
   const [edit, setEdit] = useState(false);
   let itemDesc;
   if (edit) {

@@ -1,10 +1,13 @@
 import React from 'react';
 import { render } from 'react-dom';
 import App from './App';
+import { ListProvider } from './context/ListContext';
 
 render(
   <React.StrictMode>
-    <App />
+    <ListProvider>
+      <App />
+    </ListProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
