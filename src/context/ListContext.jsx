@@ -38,13 +38,13 @@ export const ListContext = createContext();
 
 const ListProvider = ({ children }) => {
   const [items, dispatch] = useReducer(itemsReducer, initialItems);
-
-  //   useEffect(() => {
-  //     const fetchItems = async () => {
-
-  //     };
-  //     fetchItems();
-  //   }, []);
+  localStorage.setItem('LIST', JSON.stringify(items));
+  useEffect(() => {
+    const fetchItems = async () => {
+      localStorage.getItem('LIST', items);
+    };
+    fetchItems();
+  }, []);
   const handleAdd = (text) => {
     dispatch({
       type: 'added',
