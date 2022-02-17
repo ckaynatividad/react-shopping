@@ -1,9 +1,10 @@
 import { createContext, useContext, useEffect, useReducer } from 'react';
 
 function itemsReducer(items, action) {
+  let list;
   switch (action.type) {
     case 'added': {
-      return [
+      list = [
         ...items,
         {
           id: action.id,
@@ -11,6 +12,8 @@ function itemsReducer(items, action) {
           done: false,
         },
       ];
+      localStorage.setItem('LIST', JSON.stringify(list));
+      return list;
     }
     case 'changed': {
       return items.map((item) => {
@@ -36,22 +39,28 @@ const initialItems = [
 
 export const ListContext = createContext();
 
+// localStorage.setItem('LIST', JSON.stringify(initialItems));
 const ListProvider = ({ children }) => {
-  const [items, dispatch] = useReducer(
-    itemsReducer,
-    JSON.parse(localStorage.getItem('LIST'))
-  );
-  localStorage.setItem('LIST', JSON.stringify(items));
+  const [items, dispatch] = useReducer(itemsReducer, []);
+
   useEffect(() => {
-    const fetchItems = () => {};
+    const fetchItems = () => {
+      try {
+        let localStorageItems = JSON.parse(localStorage.getItem('LIST'));
+        localStorageItems.map((item) => handleAdd(item.text));
+      } catch {
+        initialItems.map((item) => handleAdd(item.text));
+      }
+    };
     fetchItems();
   }, []);
   const handleAdd = (text) => {
-    dispatch({
+    const addItems = dispatch({
       type: 'added',
       id: items.length,
       text,
     });
+    console.log(addItems);
   };
   const handleChange = (task) => {
     dispatch({
