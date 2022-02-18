@@ -1,33 +1,40 @@
 import { createContext, useContext, useEffect, useReducer } from 'react';
 
 function itemsReducer(items, action) {
-  let list;
+  console.log(action);
+
   switch (action.type) {
     case 'added': {
-      list = [
+      const list = [
         ...items,
         {
-          id: action.id,
+          id: items.length,
           text: action.text,
-          done: false,
+          done: action.task ? true : false,
         },
       ];
       localStorage.setItem('LIST', JSON.stringify(list));
       return list;
     }
     case 'changed': {
-      return items.map((item) => {
+      const list = items.map((item) => {
         if (item.id === action.task.id) {
           return action.task;
         }
         return item;
       });
+      localStorage.setItem('LIST', JSON.stringify(list));
+      return list;
     }
     case 'deleted': {
-      return items.filter((item) => item.id !== action.id);
+      const list = items.filter((item) => item.id !== action.id);
+      localStorage.setItem('LIST', JSON.stringify(list));
+      return list;
     }
     case 'clear': {
-      return (items = []);
+      const list = (items = []);
+      localStorage.setItem('LIST', JSON.stringify(list));
+      return list;
     }
   }
 }
@@ -55,12 +62,10 @@ const ListProvider = ({ children }) => {
     fetchItems();
   }, []);
   const handleAdd = (text) => {
-    const addItems = dispatch({
+    dispatch({
       type: 'added',
-      id: items.length,
       text,
     });
-    console.log(addItems);
   };
   const handleChange = (task) => {
     dispatch({
