@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import AddItem from '../components/AddItem';
 import ItemList from '../components/ItemList';
-import { useItems } from '../context/ListContext';
+import { ListProvider, useItems } from '../context/ListContext';
 import { addItem } from '../services/utils';
 
 export default function Home() {

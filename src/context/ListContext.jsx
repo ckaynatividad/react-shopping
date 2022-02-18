@@ -10,7 +10,7 @@ function itemsReducer(items, action) {
         {
           id: items.length,
           text: action.text,
-          done: action.task ? true : false,
+          done: false,
         },
       ];
       localStorage.setItem('LIST', JSON.stringify(list));

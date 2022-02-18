@@ -4,10 +4,10 @@ import App from './App';
 import { ListProvider } from './context/ListContext';
 
 render(
-  <React.StrictMode>
-    <ListProvider>
+  <ListProvider>
+    <React.StrictMode>
       <App />
-    </ListProvider>
-  </React.StrictMode>,
+    </React.StrictMode>
+  </ListProvider>,
   document.getElementById('root')
 );
