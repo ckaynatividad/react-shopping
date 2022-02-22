@@ -1,9 +1,14 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
+import { ListProvider } from './context/ListContext';
 
 test('adds to list', () => {
-  render(<App />);
+  render(
+    <ListProvider>
+      <App />
+    </ListProvider>
+  );
 
   const textBox = screen.getByRole('textbox');
   userEvent.type(textBox, 'cookies');
@@ -14,7 +19,11 @@ test('adds to list', () => {
 });
 
 test('changes li item', () => {
-  render(<App />);
+  render(
+    <ListProvider>
+      <App />
+    </ListProvider>
+  );
 
   const milk = screen.getByText(/Milk/i);
   const edit = within(milk).getByRole('button', { name: /Edit/i });
@@ -30,7 +39,11 @@ test('changes li item', () => {
 });
 
 test('deletes li item', () => {
-  render(<App />);
+  render(
+    <ListProvider>
+      <App />
+    </ListProvider>
+  );
 
   const noodles = screen.getByText(/Noodles/i);
   const x = within(noodles).getByRole('button', { name: /x/i });
@@ -40,7 +53,11 @@ test('deletes li item', () => {
 });
 
 test('displays all items', () => {
-  render(<App />);
+  render(
+    <ListProvider>
+      <App />
+    </ListProvider>
+  );
   const milk = screen.getByText(/Milk/i);
   expect(milk).toBeInTheDocument();
 
@@ -49,4 +66,19 @@ test('displays all items', () => {
 
   const li = screen.getAllByRole('listitem');
   expect(li).toHaveLength(3);
+});
+
+test('header clears all items', () => {
+  render(
+    <ListProvider>
+      <App />
+    </ListProvider>
+  );
+
+  const clear = screen.getByRole('button', { name: /Clear/i });
+  userEvent.click(clear);
+
+  const count = screen.getByText(`shopping list count: 0`);
+
+  expect(count).toBeInTheDocument();
 });
