@@ -10,7 +10,7 @@ function itemsReducer(items, action) {
         {
           id: items.length,
           text: action.text,
-          done: false,
+          done: !!action.done,
         },
       ];
       localStorage.setItem('LIST', JSON.stringify(list));
@@ -54,17 +54,18 @@ const ListProvider = ({ children }) => {
     const fetchItems = () => {
       try {
         let localStorageItems = JSON.parse(localStorage.getItem('LIST'));
-        localStorageItems.map((item) => handleAdd(item.text));
+        localStorageItems.map((item) => handleAdd(item.text, item.done));
       } catch {
-        initialItems.map((item) => handleAdd(item.text));
+        initialItems.map((item) => handleAdd(item.text, item.done));
       }
     };
     fetchItems();
   }, []);
-  const handleAdd = (text) => {
+  const handleAdd = (text, done) => {
     dispatch({
       type: 'added',
       text,
+      done,
     });
   };
   const handleChange = (task) => {
